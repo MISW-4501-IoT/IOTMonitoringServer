@@ -45,11 +45,13 @@ def analyze_data():
         city = item['station__location__city__name']
         user = item['station__user__username']
 
-        if item["check_value"] > max_value and variable=='luminosidad':
+        check_value = round(item["check_value"],2)
+
+        if check_value > max_value and variable=='luminosidad':
             alert = True
 
         if alert:
-            message = "ALERT {} avg:{} max_value:{}".format(variable, item["check_value"], max_value)
+            message = "ALERT {} avg:{} max_value:{}".format(variable, check_value, max_value)
             topic = '{}/{}/{}/{}/in'.format(country, state, city, user)
             print(datetime.now(), "Sending alert to {} {}".format(topic, variable))
             client.publish(topic, message)
